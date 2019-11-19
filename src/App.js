@@ -17,17 +17,9 @@ function App() {
   }, []);
 
   async function onLoad() {
-    try {
-      const user = await Auth.currentSession();
-      setCurrentUser(user);
-    }
-    catch(e) {
-      if (e !== 'No current user') {
-        alert(e);
-      }
-    }
+    const user = await Auth.currentSession();
+    setCurrentUser(user);
   }
-
   return (
     <Provider store={store}>
       <Router>
