@@ -19,7 +19,8 @@ function NavBar(props) {
                 <div className="nav-wrapper">
                 <Link to="/" className="brand-logo">Amormat</Link>
                 <ul id="nav-mobile" className="right hide-on-med-and-down">
-                    <li> <Link to="add/patient"> Add patient</Link> </li>
+                    <li> <Link to="/patients"> Patients </Link> </li>
+                    <li> <Link to="/settings"> Settings</Link> </li>
                     <li> <Link onClick={handleLogout} to="#!"> Logout</Link></li>
                 </ul>
                 </div>

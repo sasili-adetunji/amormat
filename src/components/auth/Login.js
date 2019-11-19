@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { loginUser } from "../../actions/loginActions";
-import NavBar from '../../containers/NavBar';
 
 function Login (props) {
 
@@ -29,7 +28,6 @@ function Login (props) {
 
     return (
         <div>
-            <NavBar isAuthenticated={props.isAuthenticated}/>
             <div className="section login"></div>
             <center>
                 <h3 className="light-blue-text">Amormat</h3>
