@@ -23,7 +23,7 @@ class Login extends Component {
 
     onSubmit = (e) => {
         e.preventDefault()
-        const { loginUser, history  } = this.props;
+        const { loginUser  } = this.props;
         const { email, password} = this.state
         loginUser(email, password)
 

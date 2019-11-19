@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import './App.css';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
+import {userIsAuthenticated, userIsNotAuthenticated} from './helpers/auth';
 
 import store from './store';
 
@@ -14,8 +15,8 @@ function App() {
       <div className="App">
         <div className="container">
           <Switch>
-            <Route exact path="/" component={Login} />
-            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/login" component={userIsNotAuthenticated(Login)} />
+            <Route exact path="/" component={userIsAuthenticated(Dashboard)} />
           </Switch>
         </div>
       </div>
