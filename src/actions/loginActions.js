@@ -1,17 +1,29 @@
 import { LOGIN_USER, LOGIN_ERROR } from "./types";
+import { Auth } from "aws-amplify";
+import Swal from 'sweetalert2'
 
 
-// axios call to the login API
-export const loginUser = (data) => {
-    return {
-        type: LOGIN_USER,
-        payload: data,
-    }
-}
-
-export const loginError = (data) => {
-    return {
-        type: LOGIN_ERROR,
-        payload: data,
+export const loginUser = (email, password) => async dispatch => {
+    try {
+        const response = await Auth.signIn(email, password)
+        Swal.fire(
+            'Success!',
+            'Login Successfull',
+            'success'
+        )
+        dispatch({
+            type: LOGIN_USER,
+            payload: response
+        })
+    } catch (error) {
+        Swal.fire(
+            'Error!',
+            error.message,
+            'error'
+        )
+        dispatch({
+            type: LOGIN_ERROR,
+            payload: error
+        })
     }
 }

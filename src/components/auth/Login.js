@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import loginData from '../../mockData'
-import { loginUser, loginError } from "../../actions/loginActions";
+import { loginUser } from "../../actions/loginActions";
+import './Login.css'
 
 
 class Login extends Component {
@@ -14,21 +14,19 @@ class Login extends Component {
 
     onChange = (e) => this.setState({[e.target.name]: e.target.value})
 
+    UNSAFE_componentWillReceiveProps(nextProps, nextState) {
+        const {error} = nextProps.error
+        this.setState({
+            error,
+        })
+    }
+
     onSubmit = (e) => {
-        const { loginUser, loginError, history  } = this.props;
-
         e.preventDefault()
+        const { loginUser, history  } = this.props;
         const { email, password} = this.state
-        const {logEmail, logPassword} = loginData
+        loginUser(email, password)
 
-        if (email === logEmail && password === logPassword) {
-            console.log('success')
-            loginUser(this.state)
-            history.push('/dashboard')
-        } else {
-            console.log('error')
-            loginError('error')
-        }
     }
     render() {
         return (
@@ -37,9 +35,9 @@ class Login extends Component {
                 <center>
                     <h3 className="light-blue-text">Amormat</h3>
                     <br/>
+
                     <h5 className="indigo-text">Please, login into your account</h5>
                     <br/>
-
                     <div className="container">
                     <div className="z-depth-1 grey lighten-4 row" style={{display: 'inline-block', padding: '32px 48px 0px 48px', border: '1px solid #EEE'}}>
                         <form className="col s12" onSubmit={this.onSubmit}>
@@ -75,7 +73,10 @@ class Login extends Component {
 
 Login.propTypes = {
     loginUser: PropTypes.func.isRequired,
-    loginError: PropTypes.func.isRequired
 }
 
-export default connect(null, { loginUser, loginError })(Login);
+const mapStateToProps = (state) => ({
+    user: state.login.user,
+    error: state.login.error
+});
+export default connect(mapStateToProps, { loginUser })(Login);

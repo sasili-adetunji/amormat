@@ -16,7 +16,7 @@ export default function(state=initialState, action) {
         case LOGIN_ERROR:
             return {
                 ...state,
-                error: action.payload
+                error: action.payload.message
             }
         default:
             return state;
