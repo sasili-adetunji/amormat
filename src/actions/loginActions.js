@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGIN_ERROR } from "./types";
+import { LOGIN_USER, LOGIN_ERROR , LOGOUT_USER, CURRENT_USER} from "./types";
 import { Auth } from "aws-amplify";
 import Swal from 'sweetalert2'
 
@@ -26,4 +26,25 @@ export const loginUser = (email, password) => async dispatch => {
             payload: error
         })
     }
+}
+
+export const logoutUser = () => async dispatch => {
+    const response = await Auth.signOut()
+    Swal.fire(
+        'Success!',
+        'Logout Successfull',
+        'success'
+    )
+    dispatch({
+        type: LOGOUT_USER,
+        payload: response
+    })
+}
+
+export const currentUser = () => async dispatch => {
+    const response = await Auth.currentSession()
+    dispatch({
+        type: CURRENT_USER,
+        payload: response
+    })
 }

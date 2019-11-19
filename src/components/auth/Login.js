@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { loginUser } from "../../actions/loginActions";
-import './Login.css'
-
+import NavBar from '../../containers/NavBar';
 
 function Login (props) {
 
@@ -30,7 +29,8 @@ function Login (props) {
 
     return (
         <div>
-            <div className="section"></div>
+            <NavBar isAuthenticated={props.isAuthenticated}/>
+            <div className="section login"></div>
             <center>
                 <h3 className="light-blue-text">Amormat</h3>
                 <br/>
@@ -75,6 +75,7 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => ({
     user: state.login.user,
-    error: state.login.error
+    error: state.login.error,
+    isAuthenticated: state.login.isAuthenticated
 });
 export default connect(mapStateToProps, { loginUser })(Login);

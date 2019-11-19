@@ -1,39 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import { Provider } from 'react-redux';
 import './App.css';
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import {userIsAuthenticated, userIsNotAuthenticated} from './helpers/auth';
-import { Auth } from "aws-amplify";
+import { currentUser } from "./actions/loginActions";
 
 import store from './store';
 
-function App() {
-  const [currentUser, setCurrentUser] = useState({});
-
+function App(props) {
   useEffect(() => {
-    onLoad();
-  }, []);
+    const { currentUser } = props
+    currentUser()
+  }, [props]);
 
-  async function onLoad() {
-    const user = await Auth.currentSession();
-    setCurrentUser(user);
-  }
   return (
-    <Provider store={store}>
       <Router>
       <div className="App">
         <div className="container">
           <Switch>
-            <Route exact path="/login" component={userIsNotAuthenticated(Login)} currentUser={currentUser} />
-            <Route exact path="/" component={userIsAuthenticated(Dashboard)} currentUser={currentUser} />
+            <Route exact path="/" component={userIsAuthenticated(Dashboard)} />
+            <Route exact path="/login" component={userIsNotAuthenticated(Login)} />
           </Switch>
         </div>
       </div>
       </Router>
-     </Provider>
   );
 }
 
-export default App;
+App.propTypes = {
+  currentUser: PropTypes.func.isRequired,
+}
+
+const ConnectedApp =  connect(null, { currentUser })(App);
+
+export const Root = () =>
+  <Provider store={store}><ConnectedApp/></Provider>
