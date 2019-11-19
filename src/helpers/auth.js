@@ -6,8 +6,9 @@ const locationHelper = locationHelperBuilder({})
 
 export const userIsAuthenticated = connectedRouterRedirect({
    redirectPath: '/login',
-   authenticatedSelector: state => state.login.user.username !== undefined,
-   wrapperDisplayName: 'UserIsAuthenticated'
+//    authenticatedSelector: state => state.login.user.username !== undefined,
+    authenticatedSelector: (state, ownProps) => ownProps.currentUser !== null,
+    wrapperDisplayName: 'UserIsAuthenticated'
   // TODO:// Render this component when the authenticatingSelector returns true
 //   AuthenticatingComponent: LoadingSpinner
  })
@@ -15,6 +16,7 @@ export const userIsAuthenticated = connectedRouterRedirect({
  export const userIsNotAuthenticated = connectedRouterRedirect({
     redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/',
     allowRedirectBack: false,
-    authenticatedSelector: state => state.login.user.username === undefined,
+    // authenticatedSelector: state => state.login.user.username === undefined,
+    authenticatedSelector: (state, ownProps) => ownProps.currentUser === null,
     wrapperDisplayName: 'UserIsNotAuthenticated'
   })
