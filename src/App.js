@@ -8,7 +8,7 @@ import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import {userIsAuthenticated, userIsNotAuthenticated} from './helpers/auth';
 import { currentUser } from "./actions/loginActions";
-import Patient from './components/patients/Patient';
+import Patient from './components/patients/Patients';
 import Settings from './components/settings/Settings'
 import store from './store';
 import NavBar from './containers/NavBar';

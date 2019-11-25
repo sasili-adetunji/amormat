@@ -4,10 +4,10 @@ export default {
       REGION: "us-east-1",
       BUCKET: "sasil-amormat-uploads"
     },
-    // apiGateway: { //TODO :// edit the identity pool dashboard to add lambda api
-    //   REGION: "us-east-1",
-    //   URL: "https://vs74jlacy5.execute-api.us-east-1.amazonaws.com/dev"
-    // },
+    apiGateway: { //TODO :// edit the identity pool dashboard to add lambda api
+      REGION: "us-east-1",
+      URL: "https://6m3dp1t6qc.execute-api.us-east-1.amazonaws.com/prod"
+    },
     cognito: {
       REGION: "us-east-1",
       USER_POOL_ID: "us-east-1_C3v27VkJ5",
