@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { fetchPatients } from "../../actions/patientActions";
 import Patient from './Patient'
+import SideNav from './SideNav'
 
 function Patients(props) {
 
@@ -14,12 +14,7 @@ function Patients(props) {
     return (
         <div>
             <div className="row">
-                <div className="col s12 m4 l3">
-                <ul id="sidenav-1" className="sidenav sidenav-fixed">
-                    <li><Link to="/patients" className="subheader">Patients</Link></li>
-                    <li> <Link to="/patient/add"> Add New Patient</Link></li>
-                </ul>
-                </div>
+                <SideNav />
                 <div className="col s12 m8 l9">
                 <h3>Patients List</h3>
                 <table className="striped">

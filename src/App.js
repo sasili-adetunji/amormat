@@ -12,6 +12,7 @@ import Patient from './components/patients/Patients';
 import Settings from './components/settings/Settings'
 import store from './store';
 import NavBar from './containers/NavBar';
+import AddPatient from './components/patients/AddPatient';
 
 function App(props) {
   useEffect(() => {
@@ -28,7 +29,7 @@ function App(props) {
             <Route exact path="/" component={userIsAuthenticated(Dashboard)} />
             <Route exact path="/login" component={userIsNotAuthenticated(Login)} />
             <Route exact path="/patients" component={userIsAuthenticated(Patient)} />
-            <Route exact path="/patients/add" component={userIsAuthenticated(Patient)} />
+            <Route exact path="/patient/add" component={userIsAuthenticated(AddPatient)} />
             <Route exact path="/settings" component={userIsAuthenticated(Settings)} />
           </Switch>
         </div>
