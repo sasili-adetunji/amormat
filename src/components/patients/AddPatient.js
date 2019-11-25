@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { fetchPatients } from "../../actions/patientActions";
+import { addPatient } from "../../actions/patientActions";
 import SideNav from './SideNav'
 
 function Patients(props) {
@@ -9,7 +9,7 @@ function Patients(props) {
     const [fields, setValues] = useState({
         first_name: '', last_name: '', email: '', phone_number: '',
         home_address: '', next_of_kin: '', address_of_nok: '', phone_number_of_nok: '',
-        hmo_policy_number: ''
+        hmo_policy_number: '', userId: ''
     })
     const handleFieldChange = (e) => {
         e.preventDefault()
@@ -19,9 +19,18 @@ function Patients(props) {
           })
     }
 
+    useEffect(() => {
+        const {user} = props
+        setValues({
+            ...fields,
+            userId: user.idToken.payload.email
+        })
+      }, [props]);
+
     const handleSubmit = (e) => {
         e.preventDefault()
-       console.log(fields)
+        const { addPatient } = props
+        addPatient(fields)
     }
     return (
         <div>
@@ -90,11 +99,12 @@ function Patients(props) {
 }
 
 Patients.propTypes = {
-    fetchPatients: PropTypes.func.isRequired,
+    addPatient: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
     patients: state.patients.patients,
+    user: state.login.user
 
 });
-export default connect(mapStateToProps, { fetchPatients })(Patients);
+export default connect(mapStateToProps, { addPatient })(Patients);

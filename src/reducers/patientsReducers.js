@@ -1,4 +1,4 @@
-import { FETCH_PATIENTS, FETCH_PATIENTS_ERROR} from '../actions/types';
+import { FETCH_PATIENTS, ERROR} from '../actions/types';
 
 
 const initialState = {
@@ -13,7 +13,7 @@ export default function(state=initialState, action) {
                 ...state,
                 patients: action.payload,
             }
-        case FETCH_PATIENTS_ERROR:
+        case ERROR:
             return {
                 ...state,
                 error: action.payload.message
