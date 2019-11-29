@@ -7,9 +7,9 @@ import SideNav from './SideNav'
 function Patients(props) {
 
     const [fields, setValues] = useState({
-        first_name: '', last_name: '', email: '', phone_number: '',
-        home_address: '', next_of_kin: '', address_of_nok: '', phone_number_of_nok: '',
-        hmo_policy_number: '', userId: ''
+        firstName: null, lastName: null, email: null, phoneNumber: null,
+        homeAddress: null, nextOfKin: null, phoneNumberOfNok: null,
+        hmoId: null, createdBy: null, dob: null
     })
     const handleFieldChange = (e) => {
         e.preventDefault()
@@ -23,7 +23,7 @@ function Patients(props) {
         const {user} = props
         setValues({
             ...fields,
-            userId: user.idToken.payload.email
+            createdBy: user.idToken.payload.email
         })
       }, [props]);
 
@@ -43,47 +43,47 @@ function Patients(props) {
                         <div className="row">
                             <div className="input-field col s6">
                             <i className="material-icons prefix">account_circle</i>
-                            <input type="text" className="validate" name='first_name' onChange={handleFieldChange} />
+                            <input type="text" required name='firstName' onChange={handleFieldChange} />
                             <label htmlFor="icon_prefix">First Name</label>
                             </div>
                             <div className="input-field col s6">
                             <i className="material-icons prefix">account_circle</i>
-                            <input type="text" className="validate" name='last_name' onChange={handleFieldChange}/>
+                            <input type="text" required name='lastName' onChange={handleFieldChange}/>
                             <label htmlFor="icon_prefix">Last Name</label>
                             </div>
                             <div className="input-field col s6">
                             <i className="material-icons prefix">email</i>
-                            <input type="text" className="validate" name='email' onChange={handleFieldChange} />
+                            <input type="email" required name='email' onChange={handleFieldChange} />
                             <label htmlFor="icon_email">Email</label>
                             </div>
                             <div className="input-field col s6">
                             <i className="material-icons prefix">phone</i>
-                            <input type="tel" className="validate" name='phone_number' onChange={handleFieldChange} />
+                            <input type="tel" required name='phoneNumber' onChange={handleFieldChange} />
                             <label htmlFor="icon_telephone">Telephone</label>
                             </div>
                             <div className="input-field col s6">
                             <i className="material-icons prefix">add_location</i>
-                            <input type="text" className="validate" name='home_address' onChange={handleFieldChange}/>
+                            <input type="text" required name='homeAddress' onChange={handleFieldChange}/>
                             <label htmlFor="icon_email">Home Address</label>
                             </div>
                             <div className="input-field col s6">
                             <i className="material-icons prefix">account_circle</i>
-                            <input type="text" className="validate" name='next_of_kin' onChange={handleFieldChange}/>
+                            <input type="text" required name='nextOfKin' onChange={handleFieldChange}/>
                             <label htmlFor="icon_email">Next of Kin</label>
                             </div>
                             <div className="input-field col s6">
                             <i className="material-icons prefix">add_location</i>
-                            <input type="text" className="validate" name='address_of_nok' onChange={handleFieldChange} />
-                            <label htmlFor="icon_email">Address of Next of Kin</label>
+                            <input type="text" className="datepicker" required name='dob' onChange={handleFieldChange} />
+                            <label htmlFor="icon_email">Date of Birth</label>
                             </div>
                             <div className="input-field col s6">
                             <i className="material-icons prefix">phone</i>
-                            <input type="text" className="validate" name='phone_number_of_nok' onChange={handleFieldChange}/>
+                            <input type="text" required name='phoneNumberOfNok' onChange={handleFieldChange}/>
                             <label htmlFor="icon_email">Phone Number of Next of Kin</label>
                             </div>
                             <div className="input-field col s6">
                             <i className="material-icons prefix">create</i>
-                            <input type="text" className="validate" name='hmo_policy_number' onChange={handleFieldChange}/>
+                            <input type="text" required name='hmoId' onChange={handleFieldChange}/>
                             <label htmlFor="icon_email">HMO Policy Number</label>
                             </div>
                         </div>

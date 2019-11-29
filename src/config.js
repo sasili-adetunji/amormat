@@ -6,6 +6,7 @@ export default {
     },
     apiGateway: { //TODO :// edit the identity pool dashboard to add lambda api
       REGION: "us-east-1",
+      // URL: "https://cors-anywhere.herokuapp.com/https://6m3dp1t6qc.execute-api.us-east-1.amazonaws.com/prod"
       URL: "https://6m3dp1t6qc.execute-api.us-east-1.amazonaws.com/prod"
     },
     cognito: {

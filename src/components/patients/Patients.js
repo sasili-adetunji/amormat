@@ -21,7 +21,7 @@ function Patients(props) {
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Sex</th>
+                        <th>Email</th>
                         <th>Phone Number</th>
                         <th>Date of Birth</th>
                     </tr>

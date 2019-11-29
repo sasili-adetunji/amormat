@@ -31,18 +31,22 @@ export const fetchPatients = () => async dispatch => {
 }
 
 export const addPatient = (patientInfo) => async dispatch => {
+    // console.log()
+    let myInit = {
+        "Access-Control-Allow-Credentials" : true,
+        "Access-Control-Allow-Origin": "*",
+        response: true,
+        headers: {
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            "Access-Control-Allow-Origin": "*"
+        },
+        body: patientInfo
+    }
     try {
-        let myInit = {
-            "Access-Control-Allow-Credentials" : true,
-            "Access-Control-Allow-Origin": "*",
-            response: true,
-            headers: { Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}` },
-            body: patientInfo
-        }
         const response = await API.post("patients", "/patient", myInit);
         Swal.fire(
             'Success!',
-            'Patient Added Successfull',
+            response.data.message,
             'success'
         )
         dispatch({
@@ -52,7 +56,7 @@ export const addPatient = (patientInfo) => async dispatch => {
     } catch (error) {
         Swal.fire(
             'Error!',
-            error.message,
+            error.response.data.message,
             'error'
         )
         dispatch({

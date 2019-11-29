@@ -5,10 +5,10 @@ function Patient(props) {
     const result = props.patients.data && props.patients.data['data']['Items'].map(patient => {
         return (
         <tr key={patient['patientId']}>
-            <td>{patient['first_name']} {patient['last_name']}</td>
-            <td>{patient['gender']}</td>
-            <td>{patient['phone_number']}</td>
-            <td>{patient['date_of_birth']}</td>
+            <td>{patient['firstName']} {patient['lastName']}</td>
+            <td>{patient['email']}</td>
+            <td>{patient['phoneNumber']}</td>
+            <td>{patient['dob']}</td>
         </tr>
         )
     })
