@@ -5,3 +5,6 @@ export const CURRENT_USER = 'CURRENT_USER';
 export const FETCH_PATIENTS = 'FETCH_PATIENTS';
 export const ERROR = 'ERROR';
 export const ADD_PATIENT = 'ADD_PATIENT';
+export const FETCH_PATIENT = 'FETCH_PATIENT';
+export const UPDATE_PATIENT = 'UPDATE_PATIENT';
+export const DELETE_PATIENT = 'DELETE_PATIENT';

@@ -7,10 +7,10 @@ import SideNav from './SideNav'
 
 function Patients(props) {
 
+    const { fetchPatients } = props
     useEffect(() => {
-        const { fetchPatients } = props
         fetchPatients()
-      }, []);
+      }, [fetchPatients]);
     return (
         <div>
             <div className="row">

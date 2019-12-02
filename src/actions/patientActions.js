@@ -1,4 +1,4 @@
-import { FETCH_PATIENTS, ERROR, ADD_PATIENT } from "./types";
+import { FETCH_PATIENTS, ERROR, ADD_PATIENT, FETCH_PATIENT } from "./types";
 import { API, Auth } from "aws-amplify";
 import Swal from 'sweetalert2'
 
@@ -31,7 +31,6 @@ export const fetchPatients = () => async dispatch => {
 }
 
 export const addPatient = (patientInfo) => async dispatch => {
-    // console.log()
     let myInit = {
         "Access-Control-Allow-Credentials" : true,
         "Access-Control-Allow-Origin": "*",
@@ -59,6 +58,30 @@ export const addPatient = (patientInfo) => async dispatch => {
             error.response.data.message,
             'error'
         )
+        dispatch({
+            type: ERROR,
+            payload: error
+        })
+    }
+}
+
+export const fetchPatient = (patientId) => async dispatch => {
+    let myInit = {
+        "Access-Control-Allow-Credentials" : true,
+        "Access-Control-Allow-Origin": "*",
+        response: true,
+        headers: {
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            "Access-Control-Allow-Origin": "*"
+        },
+    }
+    try {
+        const response = await API.get("patients", `/patient/${patientId}?createdBy=${(await Auth.currentSession()).getIdToken()['payload']['email']}`, myInit);
+        dispatch({
+            type: FETCH_PATIENT,
+            payload: response
+        })
+    } catch (error) {
         dispatch({
             type: ERROR,
             payload: error

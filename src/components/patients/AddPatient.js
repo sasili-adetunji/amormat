@@ -22,7 +22,7 @@ function Patients(props) {
     useEffect(() => {
         const {user} = props
         setValues({
-            ...fields,
+            // ...fields,
             createdBy: user.idToken.payload.email
         })
       }, [props]);
@@ -73,7 +73,7 @@ function Patients(props) {
                             </div>
                             <div className="input-field col s6">
                             <i className="material-icons prefix">add_location</i>
-                            <input type="text" className="datepicker" required name='dob' onChange={handleFieldChange} />
+                            <input type="text" required name='dob' onChange={handleFieldChange} />
                             <label htmlFor="icon_email">Date of Birth</label>
                             </div>
                             <div className="input-field col s6">

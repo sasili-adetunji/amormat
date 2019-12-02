@@ -13,6 +13,8 @@ import Settings from './components/settings/Settings'
 import store from './store';
 import NavBar from './containers/NavBar';
 import AddPatient from './components/patients/AddPatient';
+import SinglePatient from './components/patients/EditPatient';
+
 
 function App(props) {
   useEffect(() => {
@@ -30,6 +32,7 @@ function App(props) {
             <Route exact path="/login" component={userIsNotAuthenticated(Login)} />
             <Route exact path="/patients" component={userIsAuthenticated(Patient)} />
             <Route exact path="/patient/add" component={userIsAuthenticated(AddPatient)} />
+            <Route exact path="/patient/:id" component={userIsAuthenticated(SinglePatient)} />
             <Route exact path="/settings" component={userIsAuthenticated(Settings)} />
           </Switch>
         </div>
