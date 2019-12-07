@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { fetchPatient } from "../../actions/patientActions";
+import { fetchPatient, updatePatient } from "../../actions/patientActions";
 import SideNav from './SideNav'
 
 function EditPatient(props) {
@@ -9,7 +9,7 @@ function EditPatient(props) {
     const [fields, setValues] = useState({
         firstName: '', lastName: '', email: '', phoneNumber: '',
         homeAddress: '', nextOfKin: '', phoneNumberOfNok: '',
-        hmoId: '', dob: ''
+        hmoId: '', dob: '', createdBy: ''
     })
     const handleFieldChange = (e) => {
         e.preventDefault()
@@ -19,7 +19,7 @@ function EditPatient(props) {
           })
     }
 
-    const {fetchPatient, match, patient} = props
+    const {fetchPatient, match, patient, user} = props
     useEffect(() => {
         fetchPatient(match.params.id)
     }, [fetchPatient, match]);
@@ -34,16 +34,17 @@ function EditPatient(props) {
             nextOfKin: patient.data && patient.data.data && patient.data.data.nextOfKin,
             phoneNumberOfNok: patient.data && patient.data.data && patient.data.data.phoneNumberOfNok,
             hmoId: patient.data && patient.data.data && patient.data.data.hmoId,
-            dob: patient.data && patient.data.data && patient.data.data.dob
+            dob: patient.data && patient.data.data && patient.data.data.dob,
+            createdBy: user.idToken.payload.email
         })
-    }, [patient]);
+    }, [patient, user]);
 
     const handleUpdate = (e) => {
         e.preventDefault()
-        // const { addPatient } = props
-        console.log('Updating')
-
+        const { updatePatient } = props
+        updatePatient(fields, match.params.id)
     }
+
     const handleDelete = (e) => {
         e.preventDefault()
         // const { addPatient } = props
@@ -111,6 +112,7 @@ function EditPatient(props) {
 
 EditPatient.propTypes = {
     fetchPatient: PropTypes.func.isRequired,
+    updatePatient: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -118,4 +120,4 @@ const mapStateToProps = (state) => ({
     user: state.login.user
 
 });
-export default connect(mapStateToProps, { fetchPatient })(EditPatient);
+export default connect(mapStateToProps, { fetchPatient, updatePatient })(EditPatient);
