@@ -1,5 +1,7 @@
 import { FETCH_PATIENTS, ERROR, ADD_PATIENT, FETCH_PATIENT, UPDATE_PATIENT, DELETE_PATIENT } from "./types";
 import { API, Auth } from "aws-amplify";
+import history from '../history'
+
 import Swal from 'sweetalert2'
 
 
@@ -52,10 +54,11 @@ export const addPatient = (patientInfo) => async dispatch => {
             type: ADD_PATIENT,
             payload: response
         })
+        history.push('/patients')
     } catch (error) {
         Swal.fire(
             'Error!',
-            error.response.data.message,
+            error.message,
             'error'
         )
         dispatch({
@@ -113,10 +116,11 @@ export const updatePatient = (patientInfo, patientId) => async dispatch => {
             type: UPDATE_PATIENT,
             payload: response
         })
+        history.push('/patients')
     } catch (error) {
         Swal.fire(
             'Error!',
-            error,
+            error.message,
             'error'
         )
         dispatch({
@@ -138,7 +142,6 @@ export const deletePatient = (createdBy, patientId) => async dispatch => {
     }
     try {
         const response = await API.del("patients", `/patient/${patientId}?createdBy=${createdBy}`, myInit);
-        console.log(response, 'sss')
         Swal.fire(
             'Success!',
             response.data.message,
@@ -148,10 +151,11 @@ export const deletePatient = (createdBy, patientId) => async dispatch => {
             type: DELETE_PATIENT,
             payload: response
         })
+        history.push('/patients')
     } catch (error) {
         Swal.fire(
             'Error!',
-            error,
+            error.message,
             'error'
         )
         dispatch({

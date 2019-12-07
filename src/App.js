@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import { Router, Switch, Route} from 'react-router-dom'
 import { Provider } from 'react-redux';
 import './App.css';
 import { connect } from 'react-redux'
@@ -8,22 +8,27 @@ import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import {userIsAuthenticated, userIsNotAuthenticated} from './helpers/auth';
 import { currentUser } from "./actions/loginActions";
+import { fetchPatients } from "./actions/patientActions";
 import Patient from './components/patients/Patients';
 import Settings from './components/settings/Settings'
 import store from './store';
 import NavBar from './containers/NavBar';
 import AddPatient from './components/patients/AddPatient';
 import SinglePatient from './components/patients/EditPatient';
+import history from './history'
 
 
 function App(props) {
+  const { currentUser, fetchPatients } = props
   useEffect(() => {
-    const { currentUser } = props
     currentUser()
-  }, [props]);
+  }, [currentUser]);
 
+  useEffect(() => {
+      fetchPatients()
+    }, [fetchPatients]);
   return (
-      <Router>
+      <Router history={history}>
       <div className="App">
         <div className="container">
         <NavBar isAuthenticated={props.isAuthenticated}/>
@@ -49,7 +54,7 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.login.isAuthenticated
 });
 
-const ConnectedApp =  connect(mapStateToProps, { currentUser })(App);
+const ConnectedApp =  connect(mapStateToProps, { currentUser, fetchPatients })(App);
 
 export const Root = () =>
   <Provider store={store}><ConnectedApp/></Provider>

@@ -17,7 +17,7 @@ export default function(state=initialState, action) {
         case ADD_PATIENT:
             return {
                 ...state,
-                patients: [action.payload, ...state.patients]
+                patients: [action.payload.data.data, ...state.patients.data.data['Items']]
             }
         case FETCH_PATIENT:
             return {
@@ -27,7 +27,7 @@ export default function(state=initialState, action) {
         case UPDATE_PATIENT:
             return {
                 ...state,
-                patients: state.patients.map(patient =>
+                patients: state.patients.data.data['Items'].map(patient =>
                     patient.patientId === action.payload.patientId ?
                     (patient = action.payload) : patient
                     )
@@ -35,7 +35,7 @@ export default function(state=initialState, action) {
         case DELETE_PATIENT:
             return {
                 ...state,
-                patients: state.patients.filter(patient =>
+                patients: state.patients.data.data['Items'].filter(patient =>
                     patient.partientId !== action.payload)
             }
         case ERROR:
