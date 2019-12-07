@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { fetchPatient, updatePatient } from "../../actions/patientActions";
+import { fetchPatient, updatePatient, deletePatient } from "../../actions/patientActions";
 import SideNav from './SideNav'
 
 function EditPatient(props) {
@@ -47,8 +47,10 @@ function EditPatient(props) {
 
     const handleDelete = (e) => {
         e.preventDefault()
-        // const { addPatient } = props
-        console.log('Deleting....')
+        const { deletePatient } = props
+        const { createdBy } = fields
+        deletePatient(createdBy, match.params.id)
+
     }
     return (
         <div>
@@ -112,7 +114,8 @@ function EditPatient(props) {
 
 EditPatient.propTypes = {
     fetchPatient: PropTypes.func.isRequired,
-    updatePatient: PropTypes.func.isRequired
+    updatePatient: PropTypes.func.isRequired,
+    deletePatient: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -120,4 +123,4 @@ const mapStateToProps = (state) => ({
     user: state.login.user
 
 });
-export default connect(mapStateToProps, { fetchPatient, updatePatient })(EditPatient);
+export default connect(mapStateToProps, { fetchPatient, updatePatient, deletePatient })(EditPatient);

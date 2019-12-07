@@ -1,4 +1,4 @@
-import { FETCH_PATIENTS, ERROR, ADD_PATIENT, FETCH_PATIENT, UPDATE_PATIENT } from "./types";
+import { FETCH_PATIENTS, ERROR, ADD_PATIENT, FETCH_PATIENT, UPDATE_PATIENT, DELETE_PATIENT } from "./types";
 import { API, Auth } from "aws-amplify";
 import Swal from 'sweetalert2'
 
@@ -104,7 +104,6 @@ export const updatePatient = (patientInfo, patientId) => async dispatch => {
     }
     try {
         const response = await API.put("patients", `/patient/${patientId}?createdBy=${createdBy}`, myInit);
-        console.log(response, 'sss')
         Swal.fire(
             'Success!',
             response.data.message,
@@ -112,6 +111,41 @@ export const updatePatient = (patientInfo, patientId) => async dispatch => {
         )
         dispatch({
             type: UPDATE_PATIENT,
+            payload: response
+        })
+    } catch (error) {
+        Swal.fire(
+            'Error!',
+            error,
+            'error'
+        )
+        dispatch({
+            type: ERROR,
+            payload: error
+        })
+    }
+}
+
+export const deletePatient = (createdBy, patientId) => async dispatch => {
+    let myInit = {
+        "Access-Control-Allow-Credentials" : true,
+        "Access-Control-Allow-Origin": "*",
+        response: true,
+        headers: {
+            Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
+            "Access-Control-Allow-Origin": "*"
+        },
+    }
+    try {
+        const response = await API.del("patients", `/patient/${patientId}?createdBy=${createdBy}`, myInit);
+        console.log(response, 'sss')
+        Swal.fire(
+            'Success!',
+            response.data.message,
+            'success'
+        )
+        dispatch({
+            type: DELETE_PATIENT,
             payload: response
         })
     } catch (error) {
