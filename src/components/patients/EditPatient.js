@@ -127,9 +127,9 @@ function EditPatient(props) {
                     </form>
                 </div>
                 </div>
-                {/* <div className="s3">
+                <div className="s3">
                     <img src={fields.pictureUrl} alt=""/>
-                </div> */}
+                </div>
             </div>
         </div>
     )

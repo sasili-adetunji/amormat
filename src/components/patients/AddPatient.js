@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDropzone } from 'react-dropzone'
+import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addPatient } from "../../actions/patientActions";
@@ -21,11 +22,26 @@ function Patients(props) {
     }
 
     const onDrop = useCallback(acceptedFiles => {
-        setValues({
-            ...fields,
-            picture: acceptedFiles[0]
-          })
-      }, [fields]);
+        handleImageCompression(acceptedFiles[0]).then(x => {
+            setValues({
+                ...fields,
+                picture: x
+            })
+        })
+    }, [fields]);
+
+    const handleImageCompression = async (imageFile) => {
+        var options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 500,
+          useWebWorker: true
+        }
+        try {
+            return await imageCompression(imageFile, options);
+        } catch (error) {
+          console.log(error);
+        }
+    }
 
     const maxSize = 1048576;
 
@@ -49,7 +65,6 @@ function Patients(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        // console.log(fields)
         const { addPatient } = props
         addPatient(fields)
     }
@@ -107,29 +122,27 @@ function Patients(props) {
                             <input type="text" required name='hmoId' onChange={handleFieldChange}/>
                             <label htmlFor="icon_email">HMO Policy Number</label>
                             </div>
-                            <div className="row">
-                                <div className="col s12 m5">
-                                        <div className="card-panel" {...getRootProps()}>
-                                        <i className="material-icons">cloud_upload</i>
-                                        <input {...getInputProps()} />
-                                            {!isDragActive && 'Click here or drop a file to upload picture!'}
-                                            {isDragActive && !isDragReject && "Drop it here"}
-                                            {isDragReject && "File type not accepted, sorry!"}
-                                            {isFileTooLarge && (
-                                                <div className="text-danger mt-2">
-                                                File is too large.
-                                                </div>
-                                            )}
-                                            <ul className="list-group mt-2">
-                                            {acceptedFiles.length > 0 && acceptedFiles.map(acceptedFile => (
-                                                <li key={acceptedFile.lastModifiedDate} className="list-group-item list-group-item-success">
-                                                {acceptedFile.name}
-                                                </li>
-                                            ))}
-                                            </ul>
-                                        </div>
-                                </div>
                             </div>
+                            <div className="container">
+                                <div className="card-panel" {...getRootProps()}>
+                                    <i className="material-icons">cloud_upload</i>
+                                    <input {...getInputProps()} />
+                                        {!isDragActive && 'Click here or drop a file to upload picture!'}
+                                        {isDragActive && !isDragReject && "Drop it here"}
+                                        {isDragReject && "File type not accepted, sorry!"}
+                                        {isFileTooLarge && (
+                                            <div className="text-danger mt-2">
+                                            File is too large, It should not exceeds {maxSize / 1024 / 1024} MB.
+                                            </div>
+                                        )}
+                                        <ul className="list-group mt-2">
+                                        {acceptedFiles.length > 0 && acceptedFiles.map(acceptedFile => (
+                                            <li key={acceptedFile.lastModifiedDate} className="list-group-item list-group-item-success">
+                                            {acceptedFile.name}
+                                            </li>
+                                        ))}
+                                        </ul>
+                                </div>
                         </div>
                         <div className='row'>
                             <button type='submit' name='btn_login' className='col s12 btn btn-large waves-effect indigo'>Add Patient</button>
