@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useDropzone } from 'react-dropzone'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addPatient } from "../../actions/patientActions";
@@ -19,15 +20,24 @@ function Patients(props) {
           })
     }
 
-    const handleUploadFile = (e) => {
-        let file = e.target.files[0];
-        if (file) {
-            setValues({
-                ...fields,
-                picture: file
-              })
-          }
-    }
+    const onDrop = useCallback(acceptedFiles => {
+        setValues({
+            ...fields,
+            picture: acceptedFiles[0]
+          })
+      }, [fields]);
+
+    const maxSize = 1048576;
+
+    const { isDragActive, getRootProps, getInputProps, isDragReject, acceptedFiles, rejectedFiles } = useDropzone({
+        onDrop,
+        accept: "image/png, image/jpg, image/jpeg",
+        minSize: 0,
+        maxSize: maxSize
+    });
+
+    const isFileTooLarge = rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize;
+
 
     useEffect(() => {
         const {user} = props
@@ -39,6 +49,7 @@ function Patients(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        // console.log(fields)
         const { addPatient } = props
         addPatient(fields)
     }
@@ -96,12 +107,27 @@ function Patients(props) {
                             <input type="text" required name='hmoId' onChange={handleFieldChange}/>
                             <label htmlFor="icon_email">HMO Policy Number</label>
                             </div>
-                            <div className = "input-field file-field col s6">
-                            <i className="material-icons">file_upload</i>
-                                    <input type="file" name="file" onChange={handleUploadFile} />
-                                <div className="file-path-wrapper">
-                                    <input className="file-path validate" type="text"
-                                        placeholder="Upload Picture" />
+                            <div className="row">
+                                <div className="col s12 m5">
+                                        <div className="card-panel" {...getRootProps()}>
+                                        <i className="material-icons">cloud_upload</i>
+                                        <input {...getInputProps()} />
+                                            {!isDragActive && 'Click here or drop a file to upload picture!'}
+                                            {isDragActive && !isDragReject && "Drop it here"}
+                                            {isDragReject && "File type not accepted, sorry!"}
+                                            {isFileTooLarge && (
+                                                <div className="text-danger mt-2">
+                                                File is too large.
+                                                </div>
+                                            )}
+                                            <ul className="list-group mt-2">
+                                            {acceptedFiles.length > 0 && acceptedFiles.map(acceptedFile => (
+                                                <li key={acceptedFile.lastModifiedDate} className="list-group-item list-group-item-success">
+                                                {acceptedFile.name}
+                                                </li>
+                                            ))}
+                                            </ul>
+                                        </div>
                                 </div>
                             </div>
                         </div>

@@ -9,7 +9,7 @@ function EditPatient(props) {
     const [fields, setValues] = useState({
         firstName: '', lastName: '', email: '', phoneNumber: '',
         homeAddress: '', nextOfKin: '', phoneNumberOfNok: '',
-        hmoId: '', dob: '', createdBy: ''
+        hmoId: '', dob: '', createdBy: '', pictureUrl: ''
     })
     const handleFieldChange = (e) => {
         e.preventDefault()
@@ -17,6 +17,16 @@ function EditPatient(props) {
             ...fields,
             [e.target.name]: e.target.value
           })
+    }
+
+    const handleUploadFile = (e) => {
+        let file = e.target.files[0];
+        if (file) {
+            setValues({
+                ...fields,
+                picture: file
+              })
+          }
     }
 
     const {fetchPatient, match, patient, user} = props
@@ -35,7 +45,8 @@ function EditPatient(props) {
             phoneNumberOfNok: patient.data && patient.data.data && patient.data.data.phoneNumberOfNok,
             hmoId: patient.data && patient.data.data && patient.data.data.hmoId,
             dob: patient.data && patient.data.data && patient.data.data.dob,
-            createdBy: user.idToken.payload.email
+            createdBy: user.idToken.payload.email,
+            pictureUrl: patient.data && patient.data.data && patient.data.data.pictureUrl,
         })
     }, [patient, user]);
 
@@ -52,11 +63,12 @@ function EditPatient(props) {
         deletePatient(createdBy, match.params.id)
 
     }
+    console.log(fields.pictureUrl)
     return (
         <div>
             <div className="row">
                 <SideNav />
-                <div className="col s12 m8 l9">
+                <div className="col s9 m8 l9">
                 <h3>Patient Details</h3>
 
                 <div className="row">
@@ -98,6 +110,14 @@ function EditPatient(props) {
                             <i className="material-icons prefix">create</i>
                             <input type="text" defaultValue={fields.hmoId} required name='hmoId' onChange={handleFieldChange}/>
                             </div>
+                            <div className = "input-field file-field col s6">
+                            <i className="material-icons">file_upload</i>
+                                    <input type="file" name="file" onChange={handleUploadFile} />
+                                <div className="file-path-wrapper">
+                                    <input className="file-path validate" type="text" defaultValue={fields.pictureUrl}
+                                        placeholder="Upload Picture" />
+                                </div>
+                            </div>
                         </div>
                         <div className='row'>
                             <button onClick={handleUpdate} type='submit' name='btn_login' className='col s5 btn btn-large waves-effect indigo'>Update Patient</button>
@@ -107,6 +127,9 @@ function EditPatient(props) {
                     </form>
                 </div>
                 </div>
+                {/* <div className="s3">
+                    <img src={fields.pictureUrl} alt=""/>
+                </div> */}
             </div>
         </div>
     )
