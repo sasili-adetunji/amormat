@@ -1,6 +1,7 @@
 import { FETCH_PATIENTS, ERROR, ADD_PATIENT, FETCH_PATIENT, UPDATE_PATIENT, DELETE_PATIENT } from "./types";
 import { API, Auth } from "aws-amplify";
 import history from '../history'
+import axios from 'axios';
 
 import Swal from 'sweetalert2'
 
@@ -41,8 +42,32 @@ export const addPatient = (patientInfo) => async dispatch => {
             Authorization: `Bearer ${(await Auth.currentSession()).getIdToken().getJwtToken()}`,
             "Access-Control-Allow-Origin": "*"
         },
-        body: patientInfo
+        body: {
+            'name': patientInfo.picture.name,
+            'type': patientInfo.picture.type
+        }
     }
+
+    const initiateResult = await API.post(
+        "patients", `/patient/upload?file_name=${patientInfo.picture.name}&file_type=${patientInfo.picture.type}`,  myInit,
+      );
+    let data = initiateResult.data.data
+    let url = initiateResult.data.url
+    const postData = new FormData();
+    for(let key in data.fields){
+      postData.append(key, data.fields[key]);
+    }
+    postData.append('file', patientInfo.picture);
+    var options = {
+        headers: {
+          'Content-Type': patientInfo.picture.type
+        }
+      };
+    await axios.post(data.url, postData, options);
+    delete myInit['body']
+    delete patientInfo['picture']
+    myInit['body'] = patientInfo
+    myInit['body']['pictureUrl'] = url
     try {
         const response = await API.post("patients", "/patient", myInit);
         Swal.fire(

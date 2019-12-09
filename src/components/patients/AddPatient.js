@@ -9,7 +9,7 @@ function Patients(props) {
     const [fields, setValues] = useState({
         firstName: null, lastName: null, email: null, phoneNumber: null,
         homeAddress: null, nextOfKin: null, phoneNumberOfNok: null,
-        hmoId: null, createdBy: null, dob: null
+        hmoId: null, createdBy: null, dob: null, picture: null
     })
     const handleFieldChange = (e) => {
         e.preventDefault()
@@ -17,6 +17,16 @@ function Patients(props) {
             ...fields,
             [e.target.name]: e.target.value
           })
+    }
+
+    const handleUploadFile = (e) => {
+        let file = e.target.files[0];
+        if (file) {
+            setValues({
+                ...fields,
+                picture: file
+              })
+          }
     }
 
     useEffect(() => {
@@ -85,6 +95,14 @@ function Patients(props) {
                             <i className="material-icons prefix">create</i>
                             <input type="text" required name='hmoId' onChange={handleFieldChange}/>
                             <label htmlFor="icon_email">HMO Policy Number</label>
+                            </div>
+                            <div className = "input-field file-field col s6">
+                            <i className="material-icons">file_upload</i>
+                                    <input type="file" name="file" onChange={handleUploadFile} />
+                                <div className="file-path-wrapper">
+                                    <input className="file-path validate" type="text"
+                                        placeholder="Upload Picture" />
+                                </div>
                             </div>
                         </div>
                         <div className='row'>
